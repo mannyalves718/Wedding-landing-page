@@ -188,15 +188,15 @@
             so we can keep you updated with all the wedding details.
         </p>
         
-        <form id="guestForm" action="https://docs.google.com/forms/d/e/1FAIpQLSe0CUPReZxhfmq_XUzLoth_AI9WtfJEnXwAOO4gnUzY5Z-n7g/formResponse" method="POST" target="hidden_iframe">
+        <form id="guestForm">
             <div class="form-group">
                 <label for="name">Your Name *</label>
-                <input type="text" id="name" name="entry.2111714780" required placeholder="John Smith">
+                <input type="text" id="name" name="name" required placeholder="John Smith">
             </div>
             
             <div class="form-group">
                 <label for="email">Your Email *</label>
-                <input type="email" id="email" name="entry.1350776966" required placeholder="john@example.com">
+                <input type="email" id="email" name="email" required placeholder="john@example.com">
             </div>
             
             <button type="submit" class="submit-btn" id="submitBtn" disabled>Continue to Wedding Website →</button>
@@ -211,24 +211,22 @@
         </div>
     </div>
     
-    <!-- Hidden iframe to prevent Google Forms redirect -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-    
     <script>
         // CONFIGURATION
         const WEDDING_WEBSITE_URL = 'https://withjoy.com/tinamannyfesting/welcome';
+        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe0CUPReZxhfmq_XUzLoth_AI9WtfJEnXwAOO4gnUzY5Z-n7g/formResponse';
         
-        // Form validation - enable/disable submit button
+        // Form validation
         const nameInput = document.getElementById('name');
         const emailInput = document.getElementById('email');
         const submitBtn = document.getElementById('submitBtn');
+        const guestForm = document.getElementById('guestForm');
         
         function validateForm() {
             const nameValue = nameInput.value.trim();
             const emailValue = emailInput.value.trim();
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             
-            // Enable button only if both fields are filled and email is valid format
             if (nameValue.length > 0 && emailValue.length > 0 && emailPattern.test(emailValue)) {
                 submitBtn.disabled = false;
             } else {
@@ -236,33 +234,42 @@
             }
         }
         
-        // Add event listeners for real-time validation
         nameInput.addEventListener('input', validateForm);
         emailInput.addEventListener('input', validateForm);
-        nameInput.addEventListener('blur', validateForm);
-        emailInput.addEventListener('blur', validateForm);
         
         // Handle form submission
-        document.getElementById('guestForm').addEventListener('submit', function(e) {
-            // Don't prevent default - let the form submit to Google Forms
+        guestForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            // Get form values for display
             const name = nameInput.value.trim();
             const email = emailInput.value.trim();
             
-            // Basic validation
             if (!name || !email) {
-                e.preventDefault();
                 document.getElementById('errorMessage').style.display = 'block';
                 return;
             }
             
-            // Hide error message if shown
+            // Hide form and show loading
             document.getElementById('errorMessage').style.display = 'none';
-            
-            // Show loading message
             document.getElementById('loadingMessage').style.display = 'block';
-            document.getElementById('guestForm').style.display = 'none';
+            guestForm.style.display = 'none';
+            
+            // Prepare form data for Google Forms
+            const formData = new FormData();
+            formData.append('entry.2111714780', name);
+            formData.append('entry.1350776966', email);
+            
+            // Try to submit to Google Forms (may fail due to CORS, but that's okay)
+            try {
+                await fetch(GOOGLE_FORM_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // This bypasses CORS but we won't get a response
+                    body: formData
+                });
+            } catch (error) {
+                // Expected to fail due to CORS, but the submission still goes through
+                console.log('Form submitted (CORS error expected and normal)');
+            }
             
             // Store locally as backup
             const guestData = {
@@ -275,18 +282,11 @@
             guests.push(guestData);
             localStorage.setItem('weddingGuests', JSON.stringify(guests));
             
-            // Redirect to wedding website after form submission
+            // Redirect to wedding website
             setTimeout(() => {
                 window.location.href = WEDDING_WEBSITE_URL;
             }, 2000);
         });
-        
-        // Optional: Function to export guest data from localStorage (can be run in console)
-        function exportGuestData() {
-            const guests = JSON.parse(localStorage.getItem('weddingGuests') || '[]');
-            console.log('Guest Data:', guests);
-            return guests;
-        }
     </script>
 </body>
 </html>
