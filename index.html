@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tina & Manuel - Save the Date</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .hearts {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: #764ba2;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+        
+        .save-date {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        .wedding-date {
+            color: #764ba2;
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .intro-text {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Georgia', serif;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .submit-btn:disabled {
+            background: linear-gradient(135deg, #c0c0c0 0%, #999999 100%);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .submit-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .loading {
+            display: none;
+            color: #764ba2;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        
+        .error-message {
+            display: none;
+            color: #e74c3c;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .wedding-date {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hearts">💜 💜 💜</div>
+        <h1>Tina & Manuel</h1>
+        <p class="save-date">Save the Date</p>
+        <p class="wedding-date">May 2nd, 2025</p>
+        
+        <p class="intro-text">
+            We're so excited to celebrate with you! Please share your contact information 
+            so we can keep you updated with all the wedding details.
+        </p>
+        
+        <form id="guestForm" action="https://docs.google.com/forms/d/e/1FAIpQLSe0CUPReZxhfmq_XUzLoth_AI9WtfJEnXwAOO4gnUzY5Z-n7g/formResponse" method="POST" target="hidden_iframe">
+            <div class="form-group">
+                <label for="name">Your Name *</label>
+                <input type="text" id="name" name="entry.2111714780" required placeholder="John Smith">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Your Email *</label>
+                <input type="email" id="email" name="entry.1350776966" required placeholder="john@example.com">
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn" disabled>Continue to Wedding Website →</button>
+            
+            <div class="error-message" id="errorMessage">
+                Please fill in all required fields correctly.
+            </div>
+        </form>
+        
+        <div class="loading" id="loadingMessage">
+            Saving your information...
+        </div>
+    </div>
+    
+    <!-- Hidden iframe to prevent Google Forms redirect -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+    
+    <script>
+        // CONFIGURATION
+        const WEDDING_WEBSITE_URL = 'https://withjoy.com/tinamannyfesting/welcome';
+        
+        // Form validation - enable/disable submit button
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        function validateForm() {
+            const nameValue = nameInput.value.trim();
+            const emailValue = emailInput.value.trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            // Enable button only if both fields are filled and email is valid format
+            if (nameValue.length > 0 && emailValue.length > 0 && emailPattern.test(emailValue)) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+        
+        // Add event listeners for real-time validation
+        nameInput.addEventListener('input', validateForm);
+        emailInput.addEventListener('input', validateForm);
+        nameInput.addEventListener('blur', validateForm);
+        emailInput.addEventListener('blur', validateForm);
+        
+        // Handle form submission
+        document.getElementById('guestForm').addEventListener('submit', function(e) {
+            // Don't prevent default - let the form submit to Google Forms
+            
+            // Get form values for display
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            
+            // Basic validation
+            if (!name || !email) {
+                e.preventDefault();
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+            
+            // Hide error message if shown
+            document.getElementById('errorMessage').style.display = 'none';
+            
+            // Show loading message
+            document.getElementById('loadingMessage').style.display = 'block';
+            document.getElementById('guestForm').style.display = 'none';
+            
+            // Store locally as backup
+            const guestData = {
+                name: name,
+                email: email,
+                timestamp: new Date().toISOString()
+            };
+            
+            let guests = JSON.parse(localStorage.getItem('weddingGuests') || '[]');
+            guests.push(guestData);
+            localStorage.setItem('weddingGuests', JSON.stringify(guests));
+            
+            // Redirect to wedding website after form submission
+            setTimeout(() => {
+                window.location.href = WEDDING_WEBSITE_URL;
+            }, 2000);
+        });
+        
+        // Optional: Function to export guest data from localStorage (can be run in console)
+        function exportGuestData() {
+            const guests = JSON.parse(localStorage.getItem('weddingGuests') || '[]');
+            console.log('Guest Data:', guests);
+            return guests;
+        }
+    </script>
+</body>
+</html>
