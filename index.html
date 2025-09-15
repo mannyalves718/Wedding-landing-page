@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6B1F1F 0%, #4A0E0E 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -40,25 +40,13 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .hearts {
-            font-size: 30px;
-            margin-bottom: 20px;
-            color: #764ba2;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            background: linear-gradient(90deg, #8B2635 0%, #6B1F1F 100%);
         }
         
         h1 {
             color: #333;
             font-size: 32px;
+            margin-top: 10px;
             margin-bottom: 10px;
             font-weight: normal;
         }
@@ -71,7 +59,7 @@
         }
         
         .wedding-date {
-            color: #764ba2;
+            color: #8B2635;
             font-size: 24px;
             margin-bottom: 30px;
             font-weight: bold;
@@ -109,12 +97,12 @@
         
         input:focus {
             outline: none;
-            border-color: #764ba2;
-            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+            border-color: #8B2635;
+            box-shadow: 0 0 0 3px rgba(139, 38, 53, 0.1);
         }
         
         .submit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B2635 0%, #6B1F1F 100%);
             color: white;
             border: none;
             padding: 15px 40px;
@@ -129,7 +117,7 @@
         
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+            box-shadow: 0 10px 20px rgba(139, 38, 53, 0.3);
         }
         
         .submit-btn:active {
@@ -149,7 +137,7 @@
         
         .loading {
             display: none;
-            color: #764ba2;
+            color: #8B2635;
             margin-top: 20px;
             font-style: italic;
         }
@@ -159,6 +147,39 @@
             color: #e74c3c;
             margin-top: 10px;
             font-size: 14px;
+        }
+        
+        .welcome-back {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .welcome-back h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: normal;
+        }
+        
+        .welcome-back p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .reset-link {
+            color: #8B2635;
+            font-size: 14px;
+            text-decoration: underline;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Georgia', serif;
+        }
+        
+        .reset-link:hover {
+            color: #6B1F1F;
         }
         
         @media (max-width: 480px) {
@@ -178,36 +199,47 @@
 </head>
 <body>
     <div class="container">
-        <div class="hearts">💜 💜 💜</div>
-        <h1>Tina & Manuel</h1>
-        <p class="save-date">Save the Date</p>
-        <p class="wedding-date">May 2nd, 2025</p>
-        
-        <p class="intro-text">
-            We're so excited to celebrate with you! Please share your contact information 
-            so we can keep you updated with all the wedding details.
-        </p>
-        
-        <form id="guestForm">
-            <div class="form-group">
-                <label for="name">Your Name *</label>
-                <input type="text" id="name" name="name" required placeholder="John Smith">
-            </div>
+        <!-- Main form section -->
+        <div id="mainContent">
+            <h1>Tina & Manuel</h1>
+            <p class="save-date">Save the Date</p>
+            <p class="wedding-date">May 2nd, 2026</p>
             
-            <div class="form-group">
-                <label for="email">Your Email *</label>
-                <input type="email" id="email" name="email" required placeholder="john@example.com">
-            </div>
+            <p class="intro-text">
+                We're so excited to celebrate with you! But first, please share your name and email, 
+                as official invitations will be sent digitally.
+            </p>
             
-            <button type="submit" class="submit-btn" id="submitBtn" disabled>Continue to Wedding Website →</button>
+            <form id="guestForm">
+                <div class="form-group">
+                    <label for="name">Your Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="John Smith">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Your Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="john@example.com">
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn" disabled>Continue to Wedding Website →</button>
+                
+                <div class="error-message" id="errorMessage">
+                    Please fill in all required fields correctly.
+                </div>
+            </form>
             
-            <div class="error-message" id="errorMessage">
-                Please fill in all required fields correctly.
+            <div class="loading" id="loadingMessage">
+                Saving your information...
             </div>
-        </form>
+        </div>
         
-        <div class="loading" id="loadingMessage">
-            Saving your information...
+        <!-- Welcome back section for returning visitors -->
+        <div class="welcome-back" id="welcomeBack">
+            <h1>Tina & Manuel</h1>
+            <p class="wedding-date">May 2nd, 2026</p>
+            <h2>Welcome back!</h2>
+            <p>We already have your information. Taking you to our wedding website now...</p>
+            <button class="reset-link" id="resetLink">Need to update your information?</button>
         </div>
     </div>
     
@@ -216,77 +248,114 @@
         const WEDDING_WEBSITE_URL = 'https://withjoy.com/tinamannyfesting/welcome';
         const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe0CUPReZxhfmq_XUzLoth_AI9WtfJEnXwAOO4gnUzY5Z-n7g/formResponse';
         
-        // Form validation
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const submitBtn = document.getElementById('submitBtn');
-        const guestForm = document.getElementById('guestForm');
-        
-        function validateForm() {
-            const nameValue = nameInput.value.trim();
-            const emailValue = emailInput.value.trim();
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // Check if user has already submitted the form
+        window.addEventListener('DOMContentLoaded', function() {
+            const hasSubmitted = localStorage.getItem('weddingFormSubmitted');
+            const guestName = localStorage.getItem('weddingGuestName');
             
-            if (nameValue.length > 0 && emailValue.length > 0 && emailPattern.test(emailValue)) {
-                submitBtn.disabled = false;
-            } else {
-                submitBtn.disabled = true;
-            }
-        }
-        
-        nameInput.addEventListener('input', validateForm);
-        emailInput.addEventListener('input', validateForm);
-        
-        // Handle form submission
-        guestForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const name = nameInput.value.trim();
-            const email = emailInput.value.trim();
-            
-            if (!name || !email) {
-                document.getElementById('errorMessage').style.display = 'block';
-                return;
-            }
-            
-            // Hide form and show loading
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('loadingMessage').style.display = 'block';
-            guestForm.style.display = 'none';
-            
-            // Prepare form data for Google Forms
-            const formData = new FormData();
-            formData.append('entry.2111714780', name);
-            formData.append('entry.1350776966', email);
-            
-            // Try to submit to Google Forms (may fail due to CORS, but that's okay)
-            try {
-                await fetch(GOOGLE_FORM_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // This bypasses CORS but we won't get a response
-                    body: formData
+            if (hasSubmitted === 'true') {
+                // Hide the form and show welcome back message
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('welcomeBack').style.display = 'block';
+                
+                // Personalize the welcome if we have their name
+                if (guestName) {
+                    document.querySelector('#welcomeBack h2').textContent = `Welcome back, ${guestName}!`;
+                }
+                
+                // Handle reset link
+                document.getElementById('resetLink').addEventListener('click', function() {
+                    localStorage.removeItem('weddingFormSubmitted');
+                    localStorage.removeItem('weddingGuestName');
+                    location.reload();
                 });
-            } catch (error) {
-                // Expected to fail due to CORS, but the submission still goes through
-                console.log('Form submitted (CORS error expected and normal)');
+                
+                // Redirect to wedding website after 2.5 seconds
+                setTimeout(() => {
+                    window.location.href = WEDDING_WEBSITE_URL;
+                }, 2500);
+            } else {
+                // Set up form for first-time visitors
+                setupForm();
+            }
+        });
+        
+        function setupForm() {
+            // Form validation
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const submitBtn = document.getElementById('submitBtn');
+            const guestForm = document.getElementById('guestForm');
+            
+            function validateForm() {
+                const nameValue = nameInput.value.trim();
+                const emailValue = emailInput.value.trim();
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (nameValue.length > 0 && emailValue.length > 0 && emailPattern.test(emailValue)) {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = true;
+                }
             }
             
-            // Store locally as backup
-            const guestData = {
-                name: name,
-                email: email,
-                timestamp: new Date().toISOString()
-            };
+            nameInput.addEventListener('input', validateForm);
+            emailInput.addEventListener('input', validateForm);
             
-            let guests = JSON.parse(localStorage.getItem('weddingGuests') || '[]');
-            guests.push(guestData);
-            localStorage.setItem('weddingGuests', JSON.stringify(guests));
-            
-            // Redirect to wedding website
-            setTimeout(() => {
-                window.location.href = WEDDING_WEBSITE_URL;
-            }, 2000);
-        });
+            // Handle form submission
+            guestForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
+                
+                if (!name || !email) {
+                    document.getElementById('errorMessage').style.display = 'block';
+                    return;
+                }
+                
+                // Hide form and show loading
+                document.getElementById('errorMessage').style.display = 'none';
+                document.getElementById('loadingMessage').style.display = 'block';
+                guestForm.style.display = 'none';
+                
+                // Prepare form data for Google Forms
+                const formData = new FormData();
+                formData.append('entry.2111714780', name);
+                formData.append('entry.1350776966', email);
+                
+                // Try to submit to Google Forms
+                try {
+                    await fetch(GOOGLE_FORM_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        body: formData
+                    });
+                } catch (error) {
+                    console.log('Form submitted (CORS error expected and normal)');
+                }
+                
+                // Mark that this user has submitted the form
+                localStorage.setItem('weddingFormSubmitted', 'true');
+                localStorage.setItem('weddingGuestName', name.split(' ')[0]); // Store first name for personalization
+                
+                // Store guest data as backup
+                const guestData = {
+                    name: name,
+                    email: email,
+                    timestamp: new Date().toISOString()
+                };
+                
+                let guests = JSON.parse(localStorage.getItem('weddingGuests') || '[]');
+                guests.push(guestData);
+                localStorage.setItem('weddingGuests', JSON.stringify(guests));
+                
+                // Redirect to wedding website
+                setTimeout(() => {
+                    window.location.href = WEDDING_WEBSITE_URL;
+                }, 2000);
+            });
+        }
     </script>
 </body>
 </html>
